@@ -1,4 +1,4 @@
-baseURL = 'https://ctii.github.io/'
+baseURL = 'https://clayton.coffee'
 languageCode = 'en-us'
 title = 'Clayton Townsend II'
 theme = ["github.com/panr/hugo-theme-terminal"]
