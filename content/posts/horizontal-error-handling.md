@@ -2,11 +2,19 @@
 draft = true
 date = 2022-08-29T16:12:07-05:00
 title = "Horizontal Error Handling in Go"
+description = "Errors in Go are fairly simple, *most of the time*, and then you encounter an error while *already* handling an error."
 tags = ["go"]
 +++
 
 # Errors in Go are fairly simple most of the time.
-You just call a function that returns an error, check it, maybe wrap it with context, then return ```if err != nil```. And that covers the vast majority of error handling people do when writing Go. 
+You just call a function that returns an error, check it, maybe wrap it with context, then 
+``` go
+if err != nil { 
+	return err 
+}
+```
+
+And that covers the vast majority of error handling people do when writing Go. 
 
 For example, this simple function that replaces new lines in a file:
 
