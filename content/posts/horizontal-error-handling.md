@@ -16,7 +16,7 @@ if err != nil {
 
 And that covers the vast majority of error handling people do when writing Go. 
 
-For example, this simple function that replaces new lines in a file:
+For example, this function that replaces new lines in a file:
 
 ```go
 func openReadWriteReplaceNewLine(filename string) error {
@@ -50,3 +50,5 @@ func openReadWriteReplaceNewLine(filename string) error {
 	return nil
 }
 ```
+
+
