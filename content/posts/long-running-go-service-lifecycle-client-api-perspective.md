@@ -6,6 +6,7 @@ authorTwitter = "shctii" #do not include @
 tags = ["go", "golang", "lifecycle management", "api design"]
 description = "A overview of different approaches to exposing service lifecycles to a user of an api"
 showFullContent = false
+draft = true
 readingTime = true
 hideComments = false
 +++
