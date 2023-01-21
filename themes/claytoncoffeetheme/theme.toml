@@ -1,0 +1,12 @@
+name = "claytoncoffeetheme"
+license = "MIT"
+licenselink = "https://github.com/ctII/clayton.coffee/blob/master/LICENSE"
+description = "theme specfically for clayton.coffee"
+homepage = "https://clayton.coffee"
+tags = []
+features = []
+min_version = "0.41.0"
+
+[author]
+  name = "Clayton Townsend II"
+  homepage = "https://clayton.coffee"

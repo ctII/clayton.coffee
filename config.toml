@@ -1,39 +1,7 @@
 baseURL = 'https://clayton.coffee'
 languageCode = 'en-us'
 title = 'Clayton Townsend II'
-theme = ["github.com/panr/hugo-theme-terminal"]
-
-paginate = 5
-
-[params]
-contentTypeName = "posts"
-themeColor = "green"
-showMenuItems = 2
-centerTheme = true
-autoCover = true
-favicon = "images/avatar.jpg"
-readingTime = true
-Toc = true
-
-[languages]
-  [languages.en]
-    languageName = "English"
-    title = "Terminal"
-    subtitle = "A simple, retro theme for Hugo"
-    owner = "Clayton Townsend II"
-    keywords = "blog"
-    copyright = "© 2022 Clayton Townsend II"
-    menuMore = "Show more"
-    readMore = "Read more"
-    readOtherPosts = "Read other posts"
-    newerPosts = "Newer posts"
-    olderPosts = "Older posts"
-    missingContentMessage = "Page not found..."
-    missingBackButtonLabel = "Back to home page"
-
-  [languages.en.params.logo]
-    logoText = "Clayton Townsend II"
-    logoHomeLink = "/"
+theme = 'claytoncoffeetheme'
 
 [markup]
   [markup.highlight]
