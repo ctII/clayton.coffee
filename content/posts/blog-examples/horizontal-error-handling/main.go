@@ -2,48 +2,45 @@ package main
 
 import (
 	"bytes"
-	"fmt"
 	"io"
+	"log"
 	"os"
 )
 
 func main() {
-	err := openReadWriteReplaceNewLine(os.Args[1])
+	err := replaceFileNewLines(os.Args[1], "---")
 	if err != nil {
-		fmt.Println(err)
+		panic(err)
 	}
 }
 
-func openReadWriteReplaceNewLine(filename string) error {
-	f, err := os.OpenFile(filename, os.O_RDWR, 0755)
+func replaceFileNewLines(path string, replace string) error {
+	f, err := os.OpenFile(path, os.O_RDWR, 0755)
 	if err != nil {
 		return err
 	}
 	defer func() {
-		err2 := f.Close()
-		if err2 != nil {
-			fmt.Println(err)
+		if err := f.Close(); err != nil {
+			log.Printf("could not close file (%v)", err)
 		}
 	}()
 
-	bs, err := io.ReadAll(f)
+	fileContents, err := io.ReadAll(f)
 	if err != nil {
 		return err
 	}
 
-	bs = bytes.ReplaceAll(bs, []byte("\n"), []byte(""))
+	fileContents = bytes.ReplaceAll(fileContents, []byte("\n"), []byte(replace))
 
-	err = f.Truncate(0)
-	if err != nil {
-		return err
-	}
-	_, err = f.Seek(0, 0)
-	if err != nil {
+	if err = f.Truncate(0); err != nil {
 		return err
 	}
 
-	_, err = f.Write(bs)
-	if err != nil {
+	if _, err = f.Seek(0, 0); err != nil {
+		return err
+	}
+
+	if _, err = f.Write(fileContents); err != nil {
 		return err
 	}
 
