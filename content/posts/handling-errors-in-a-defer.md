@@ -1,6 +1,6 @@
 +++ 
 draft = false
-date = 2023-05-05 19:08:09-05:00
+date = 2023-05-06 19:08:09-05:00
 title = "Handling errors in a defer"
 description = "Error handling in Go is fairly simple, well, *most of the time*, and then you encounter an error while *already* handling an error."
 tags = ["go"]
