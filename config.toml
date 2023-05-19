@@ -34,6 +34,11 @@ Toc = true
   [languages.en.params.logo]
     logoText = "Clayton Townsend II"
     logoHomeLink = "/"
+  [languages.en.menu]
+  	[[languages.en.menu.main]]
+	  identifier = "about"
+	  name = "About"
+	  url = "/about"
 
 [markup]
   [markup.highlight]
