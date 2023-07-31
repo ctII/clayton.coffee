@@ -16,7 +16,7 @@ readingTime = true
 Toc = true
 
 [languages]
-  [languages.en]
+  [languages.en.params]
     languageName = "English"
     title = "Terminal"
     subtitle = "A simple, retro theme for Hugo"
