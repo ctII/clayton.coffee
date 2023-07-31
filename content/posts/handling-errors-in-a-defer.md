@@ -49,9 +49,9 @@ func replaceFileNewLines(path string, replace string) error {
 }
 ```
 
-Generally this works, except that it ignores an error from ```f.Close()```.
+Generally this works, except that it ignores an error from `f.Close()`.
 
-I'm going to ignore what potential errors that ```f.Close()``` can return and argue that it's better to handle the 
+I'm going to ignore what potential errors that `f.Close()` can return and argue that it's better to handle the 
 error even if you generally don't expect an error, or have a clear cut way to handle that error other than returning it.
 
 By handling errors consistently, readers of the code don't have to wonder if that missed error could be troublesome later.
@@ -63,7 +63,7 @@ Sadly, most people just write
 defer f.Close()
 ```
 
-and call it good enough. However, this ignores a potential error from ```f.Close()```
+and call it good enough. However, this ignores a potential error from `f.Close()`
 
 ### Logging the error
 
@@ -95,13 +95,13 @@ func replaceFileNewLines(path string, replace string) (err error) {
 }
 ```
 
-Note: A named return is used here ```(err error)``` as they are modifiable by a ```defer```. See [the Go spec](https://go.dev/ref/spec#Defer_statements). See also [my tool for detecting this](https://github.com/simplylib/defermodafterreturn).
+Note: A named return is used here `(err error)` as they are modifiable by a `defer`. See [the Go spec](https://go.dev/ref/spec#Defer_statements). See also [my tool for detecting this](https://github.com/simplylib/defermodafterreturn).
 
-But this loses some type information since ```%v``` only retrieves the error as a string. This means when attempting to use the built-in Go facilities, such as [```errors.Is```](https://pkg.go.dev/errors#Is) or [```errors.As```](https://pkg.go.dev/errors#As), the error from ```f.Close()``` is not receivable or detectable without attempting to do horribly error prone string comparisons.
+But this loses some type information since `%v` only retrieves the error as a string. This means when attempting to use the built-in Go facilities, such as [`errors.Is`](https://pkg.go.dev/errors#Is) or [`errors.As`](https://pkg.go.dev/errors#As), the error from `f.Close()` is not receivable or detectable without attempting to do horribly error prone string comparisons.
 
 ### Pre Go1.20
 
-The better solution is to use a multierror library, such as [hashicorp's go-multierror](https://github.com/hashicorp/go-multierror) or my own [multierror](https://github.com/simplylib/multierror). Both handle errors the same way by combining them into a single error that works with [```errors.Is```](https://pkg.go.dev/errors#Is) and [```errors.As```](https://pkg.go.dev/errors#As).
+The better solution is to use a multierror library, such as [hashicorp's go-multierror](https://github.com/hashicorp/go-multierror) or my own [multierror](https://github.com/simplylib/multierror). Both handle errors the same way by combining them into a single error that works with [`errors.Is`](https://pkg.go.dev/errors#Is) and [`errors.As`](https://pkg.go.dev/errors#As).
 
 ```go
 func replaceFileNewLines(path string, replace string) (err error) {
@@ -117,7 +117,7 @@ func replaceFileNewLines(path string, replace string) (err error) {
 
 ### Post Go1.20
 
-Starting in Go 1.20 the [errors package](https://pkg.go.dev/errors) now includes [```errors.Join```](https://pkg.go.dev/errors#Join). This lets errors be combined into a single error that still works with [```errors.Is```](https://pkg.go.dev/errors#Is) and [```errors.As```](https://pkg.go.dev/errors#As).
+Starting in Go 1.20 the [errors package](https://pkg.go.dev/errors) now includes [`errors.Join`](https://pkg.go.dev/errors#Join). This lets errors be combined into a single error that still works with [`errors.Is`](https://pkg.go.dev/errors#Is) and [`errors.As`](https://pkg.go.dev/errors#As).
 
 
 ```go
@@ -132,7 +132,7 @@ func replaceFileNewLines(path string, replace string) (err error) {
 }
 ```
 
-Alternatively, [```fmt.Errorf```](https://pkg.go.dev/fmt#Errorf) now supports multiple ```%w``` verbs.
+Alternatively, [`fmt.Errorf`](https://pkg.go.dev/fmt#Errorf) now supports multiple `%w` verbs.
 
 ```go
 func replaceFileNewLines(path string, replace string) (err error) {
@@ -153,6 +153,6 @@ func replaceFileNewLines(path string, replace string) (err error) {
 However, I argue the intention to combine errors is clearer, not to mention faster to read, than the first option.
 
 ## Conclusion
-Unlike every other part of Go development the errors from ```Close```, and every other error that occurs in a deferred call, are generally ignored by Go developers even when the Go dogma is to handle an error no matter what. This happens even when CI pipelines are giving warnings about unhandled errors, or even just VSCode/Goland highlighting these unhandled errors. 
+Unlike every other part of Go development the errors from `Close`, and every other error that occurs in a deferred call, are generally ignored by Go developers even when the Go dogma is to handle an error no matter what. This happens even when CI pipelines are giving warnings about unhandled errors, or even just VSCode/Goland highlighting these unhandled errors. 
 
 Don't let an unhandled error cause the next high priority weekend meeting.
