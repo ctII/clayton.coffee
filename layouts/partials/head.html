@@ -5,6 +5,11 @@
 <meta name="robots" content="noodp" />
 <link rel="canonical" href="{{ .Permalink }}" />
 
+{{ if .IsHome }}
+<!-- Mastodon verification -->
+<link rel="me" href="https://infosec.exchange/@ctii">
+{{ end }}
+
 {{ template "_internal/google_analytics.html" . }}
 
 <!-- Theme CSS -->
