@@ -7,10 +7,12 @@ tags = ["go"]
 +++
 
 # Error handling in Go is fairly simple, well, most of the time.
+
 Generally you just call a function that returns an error, check it, and then 
-``` go
+
+```go
 if err != nil { 
-	return err 
+    return err 
 }
 ```
 
@@ -20,32 +22,32 @@ For example, this function that replaces new lines in a file:
 
 ```go
 func replaceFileNewLines(path string, replace string) error {
-	f, err := os.OpenFile(path, os.O_RDWR, 0755)
-	if err != nil {
-		return err
-	}
-	defer f.Close()
+    f, err := os.OpenFile(path, os.O_RDWR, 0755)
+    if err != nil {
+        return err
+    }
+    defer f.Close()
 
-	fileContents, err := io.ReadAll(f)
-	if err != nil {
-		return err
-	}
+    fileContents, err := io.ReadAll(f)
+    if err != nil {
+        return err
+    }
 
-	fileContents = bytes.ReplaceAll(fileContents, []byte("\n"), []byte(replace))
+    fileContents = bytes.ReplaceAll(fileContents, []byte("\n"), []byte(replace))
 
-	if err = f.Truncate(0); err != nil {
-		return err
-	}
+    if err = f.Truncate(0); err != nil {
+        return err
+    }
 
-	if _, err = f.Seek(0, 0); err != nil {
-		return err
-	}
+    if _, err = f.Seek(0, 0); err != nil {
+        return err
+    }
 
-	if _, err = f.Write(fileContents); err != nil {
-		return err
-	}
+    if _, err = f.Write(fileContents); err != nil {
+        return err
+    }
 
-	return nil
+    return nil
 }
 ```
 
@@ -57,6 +59,7 @@ error even if you generally don't expect an error, or have a clear cut way to ha
 By handling errors consistently, readers of the code don't have to wonder if that missed error could be troublesome later.
 
 ## Handling errors that occur in defers
+
 Sadly, most people just write
 
 ```go
@@ -71,9 +74,9 @@ One *could* just log the error if it happened
 
 ```go
 defer func() {
-	if err2 := f.Close(); err2 != nil {
-		log.Printf("could not close file (%v)", err2)
-	}
+    if err2 := f.Close(); err2 != nil {
+        log.Printf("could not close file (%v)", err2)
+    }
 }()
 ```
 
@@ -85,8 +88,8 @@ How about adding err2's string to err?
 
 ```go
 func replaceFileNewLines(path string, replace string) (err error) {
-	[...]
-	defer func() {
+    [...]
+    defer func() {
         if err2 := f.Close(); err2 != nil {
             err = fmt.Errorf("could not close file (%v) after another error occurred (%w)", err2, err)
         }
@@ -105,7 +108,7 @@ The better solution is to use a multierror library, such as [hashicorp's go-mult
 
 ```go
 func replaceFileNewLines(path string, replace string) (err error) {
-	[...]
+    [...]
     defer func() {
         if err2 := f.Close(); err2 != nil {
             err = multierror.Append(err, fmt.Errorf("could not close file (%w)", err2))
@@ -119,11 +122,10 @@ func replaceFileNewLines(path string, replace string) (err error) {
 
 Starting in Go 1.20 the [errors package](https://pkg.go.dev/errors) now includes [`errors.Join`](https://pkg.go.dev/errors#Join). This lets errors be combined into a single error that still works with [`errors.Is`](https://pkg.go.dev/errors#Is) and [`errors.As`](https://pkg.go.dev/errors#As).
 
-
 ```go
 func replaceFileNewLines(path string, replace string) (err error) {
     [...]
-	defer func() {
+    defer func() {
         if err2 := f.Close(); err2 != nil {
             err = errors.Join(err, fmt.Errorf("could not close file (%w)", err2))
         }
@@ -137,7 +139,7 @@ Alternatively, [`fmt.Errorf`](https://pkg.go.dev/fmt#Errorf) now supports multip
 ```go
 func replaceFileNewLines(path string, replace string) (err error) {
     [...]
-	defer func() {
+    defer func() {
         if err2 := f.Close(); err2 != nil {
             if err == nil {
                 err = fmt.Errorf("could not close file (%w)", err2)
@@ -153,6 +155,7 @@ func replaceFileNewLines(path string, replace string) (err error) {
 However, I argue the intention to combine errors is clearer, not to mention faster to read, than the first option.
 
 ## Conclusion
+
 Unlike every other part of Go development the errors from `Close`, and every other error that occurs in a deferred call, are generally ignored by Go developers even when the Go dogma is to handle an error no matter what. This happens even when CI pipelines are giving warnings about unhandled errors, or even just VSCode/Goland highlighting these unhandled errors. 
 
 Don't let an unhandled error cause the next high priority weekend meeting.
