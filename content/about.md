@@ -17,4 +17,4 @@ Or if you prefer [Mastodon](https://infosec.exchange/@ctii)
 My public keyring can be found [here](/pgp/public.asc)
 
 # SSH
-If you need me to work on something with you, [here](/pgp/sshkey) is my SSH public key, keep in mind it changes every 3 months.
+If you need me to work on something with you, [here](/pgp/sshkey) is my SSH public key.
