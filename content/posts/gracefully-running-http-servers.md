@@ -8,6 +8,7 @@ keywords = ["go", "golang", "http"]
 description = ""
 showFullContent = false
 readingTime = true
+draft = true
 +++
 
 Generally when I see http servers written by new Go programmers, I see [`net/http`](https://pkg.go.dev/net/http) used in a manner that does not handle shutdowns gracefully.
